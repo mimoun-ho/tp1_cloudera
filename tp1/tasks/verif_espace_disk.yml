@@ -1,8 +1,7 @@
----
-
 - name: rapport des slaves du cluster
-  ansible.builtin.command: hadoop dfsadmin -report
+  command: hadoop dfsadmin -report
   register: rapport
+
 
 - name: Afficher les résultats
   ansible.builtin.debug:
