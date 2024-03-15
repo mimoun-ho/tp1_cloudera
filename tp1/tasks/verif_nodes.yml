@@ -2,8 +2,7 @@
   command: hadoop dfsadmin -report
   register: rapport
 
-
-- name: Afficher les résultats
+- name: Afficher les résultats du rapport
   ansible.builtin.debug:
     var: rapport.stdout_lines
 
@@ -11,6 +10,6 @@
   ansible.builtin.command: df -h
   register: disk_space
 
-- name: Afficher les résultats
+- name: Afficher les résultats de l'espace disque
   ansible.builtin.debug:
     var: disk_space.stdout_lines
