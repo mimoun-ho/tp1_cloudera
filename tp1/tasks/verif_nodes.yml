@@ -1,6 +1,9 @@
 - name: rapport des slaves du cluster
-  command: hadoop dfsadmin -report
+  command: hdfs dfsadmin -report
+  become: yes
+  become_user: hdfs
   register: rapport
+
 
 - name: Afficher les résultats du rapport
   debug:
