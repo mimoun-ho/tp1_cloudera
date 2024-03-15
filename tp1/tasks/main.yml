@@ -1,5 +1,4 @@
 ---
-# Fichier principal pour le rôle hadoop_common
 
-- name: Vérifier l'espace disque disponible
+- name: montrer espace disque
   import_tasks: verif_espace_disk.yml
