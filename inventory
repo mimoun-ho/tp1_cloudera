@@ -1,3 +1,7 @@
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+
+
 [masters]
 master1 ansible_host=192.168.0.1 ansible_user=u1 
 standby ansible_host=192.168.0.4 ansible_user=u1  
