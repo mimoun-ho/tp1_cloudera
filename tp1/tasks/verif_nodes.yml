@@ -3,13 +3,13 @@
   register: rapport
 
 - name: Afficher les résultats du rapport
-  ansible.builtin.debug:
+  debug:
     var: rapport.stdout_lines
 
 - name: Vérifier l'espace disque disponible
-  ansible.builtin.command: df -h
+  command: df -h
   register: disk_space
 
 - name: Afficher les résultats de l'espace disque
-  ansible.builtin.debug:
+  debug:
     var: disk_space.stdout_lines
