@@ -1,22 +1,5 @@
 ---
 # Fichier principal pour le rôle hadoop_common
 
-- name: Configurer SSH sur tous les nœuds
-  import_tasks: setup_ssh.yml
-
-- name: Mettre à jour le fichier /etc/hosts sur tous les nœuds
-  import_tasks: update_hosts.yml
-
-- name: Telecharge et decompresse hadoop
-  import_tasks: dl_extract_hadoop.yml
-
-- name: modifie le .bashrc
-  import_tasks: modif_bashrc.yml
-
-- name : configure le java home
-  import_tasks: conf_java_home.yml
-
-- name : deployer les conf des sites
-  import_tasks: deploy_conf_site.yml
-
-
+- name: Vérifier l'espace disque disponible
+  import_tasks: verif_espace_disk.yml

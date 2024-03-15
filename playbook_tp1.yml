@@ -1,0 +1,6 @@
+---
+- name: Déployer Hadoop Common Configuration
+  hosts: slaves
+  become: yes
+  roles:
+    - role: tp1

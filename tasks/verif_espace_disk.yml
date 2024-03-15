@@ -1,0 +1,8 @@
+
+- name: Vérifier l'espace disque disponible
+  ansible.builtin.command: df -h
+  register: disk_space
+
+- name: Afficher les résultats
+  ansible.builtin.debug:
+    var: disk_space.stdout_lines
