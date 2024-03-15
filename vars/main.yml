@@ -1,0 +1,38 @@
+---
+# vars file for hadoop_common
+
+mycluster_name: "mycluster"
+zookeeper_quorum: "master1:2181,master2:2181,master3:2181"
+# ... autres variables ...
+hadoop_install_dir: /usr/local/hadoop
+dfs_replication: 2
+dfs_namenode_name_dir: "/home/u1/hadoop/hdfs/namenode"
+dfs_datanode_data_dir: "/home/u1/hadoop/hdfs/datanode"
+dfs_permissions_enabled: false
+dfs_journalnode_edits_dir: "/home/u1/journal/data"
+dfs_nameservices: "mycluster"
+dfs_ha_namenodes: "nn1,nn2,nn3"
+dfs_ha_namenodes_list:
+  - master1
+  - master2
+  - master3
+dfs_ha_fencing_ssh_private_key_files: "/home/u1/.ssh/id_rsa"
+yarn_nodemanager_local_dirs: "/home/u1/hadoop/yarn/local"
+yarn_nodemanager_log_dirs: "/home/u1/hadoop/yarn/logs"
+yarn_cluster_id: "mycluster"
+yarn_rm_ids: "rm1,rm2,rm3"
+yarn_rm_ids_list:
+  - "rm1"
+  - "rm2"
+  - "rm3"
+hadoop_zk_address: "master1:2181,master2:2181,master3:2181"
+java_home: "/usr/lib/jvm/java-8-openjdk-amd64"
+hadoop_env_sh_path: "/usr/local/hadoop/etc/hadoop/hadoop-env.sh"
+# Variables pour le téléchargement et l'installation de Hadoop
+hadoop_version: "3.3.2"
+hadoop_download_url: "https://archive.apache.org/dist/hadoop/common/hadoop-{{ hadoop_version }}/hadoop-{{ hadoop_version }}.tar.gz"
+hadoop_archive_path: "/tmp/hadoop-{{ hadoop_version }}.tar.gz"
+# Nouvelles variables pour le fichier .bashrc
+deploy_user: u1
+deploy_group: u1
+deploy_home: "/home/u1"

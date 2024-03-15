@@ -1,0 +1,11 @@
+- name: Déployer les fichiers de configuration Hadoop à partir des templates
+  ansible.builtin.template:
+    src: "templates/{{ item.src }}"
+    dest: "{{ hadoop_install_dir }}/etc/hadoop/{{ item.dest }}"
+  loop:
+    - { src: "core-site.xml.j2", dest: "core-site.xml" }
+    - { src: "hdfs-site.xml.j2", dest: "hdfs-site.xml" }
+    - { src: "yarn-site.xml.j2", dest: "yarn-site.xml" }
+    - { src: "mapred-site.xml.j2", dest: "mapred-site.xml" }
+  when: deploy_site | default(true)
+

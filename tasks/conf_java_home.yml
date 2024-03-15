@@ -1,0 +1,8 @@
+- name: Définir JAVA_HOME dans hadoop-env.sh
+  ansible.builtin.lineinfile:
+    path: "{{ hadoop_env_sh_path }}"
+    regexp: '^export JAVA_HOME='
+    line: 'export JAVA_HOME={{ java_home }}'
+    state: present
+    create: no
+  when: conf_java_home | default(true)

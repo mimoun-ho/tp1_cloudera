@@ -1,0 +1,45 @@
+- name: Vérifier si le répertoire d'installation de Hadoop existe
+  ansible.builtin.stat:
+    path: "{{ hadoop_install_dir }}"
+  register: hadoop_dir
+  become: yes
+
+
+- name: Vérifier si l'archive Hadoop est déjà téléchargée
+  ansible.builtin.stat:
+    path: "{{ hadoop_archive_path }}"
+  register: hadoop_archive
+  become: yes
+  when: 
+    - dl_hadoop | default(true)
+
+- name: Télécharger l'archive Hadoop si elle n'est pas déjà présente
+  ansible.builtin.get_url:
+    url: "{{ hadoop_download_url }}"
+    dest: "{{ hadoop_archive_path }}"
+  register: download_result
+  become: yes
+  when: dl_hadoop | default(true) and not hadoop_archive.stat.exists
+
+
+- name: Extraire Hadoop depuis l'archive
+  ansible.builtin.unarchive:
+    src: "{{ hadoop_archive_path }}"
+    dest: "/tmp"
+    remote_src: yes
+  register: extraction_result
+  become: yes
+  when: 
+    - dl_hadoop | default(true) and not hadoop_dir.stat.exists
+
+
+
+- name: Déplacer Hadoop vers le répertoire d'installation et le renommer
+  ansible.builtin.command:
+    cmd: mv /tmp/hadoop-{{ hadoop_version }} "{{ hadoop_install_dir }}"
+  become: yes
+  when: 
+    - dl_hadoop | default(true)
+    - extraction_result.changed
+    - not hadoop_dir.stat.exists
+

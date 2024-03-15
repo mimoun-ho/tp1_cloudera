@@ -1,0 +1,53 @@
+---
+- name: Installer le serveur SSH (openssh-server)
+  ansible.builtin.package:
+    name: openssh-server
+    state: present
+  when: ssh_setup_enabled | default(true)
+
+- name: Vérifier l'existence d'une paire de clés SSH
+  ansible.builtin.stat:
+    path: "/home/{{ ansible_user }}/.ssh/id_rsa"
+  register: ssh_key
+  when: ssh_setup_enabled | default(true)
+
+- name: Générer une paire de clés SSH sur la machine de contrôle
+  ansible.builtin.openssh_keypair:
+    path: "/home/{{ ansible_user }}/.ssh/id_rsa"
+    type: rsa
+    size: 2048
+  when: ssh_key.stat.exists == false and ssh_setup_enabled | default(true)
+  delegate_to: localhost
+  run_once: true
+
+- name: Copier la clé publique sur toutes les machines pour un accès sans mot de passe
+  ansible.builtin.authorized_key:
+    user: "{{ ansible_user }}"
+    state: present
+    key: "{{ lookup('file', '/home/{{ ansible_user }}/.ssh/id_rsa.pub') }}"
+  when: ssh_setup_enabled | default(true)
+
+- name: Configurer les permissions du dossier .ssh
+  ansible.builtin.file:
+    path: "~/.ssh"
+    state: directory
+    mode: '0700'
+  become: yes
+  when: ssh_setup_enabled | default(true)
+
+- name: Trouver tous les fichiers dans le dossier .ssh
+  ansible.builtin.find:
+    paths: "~/.ssh"
+    recurse: no
+  register: ssh_files
+  become: yes
+  when: ssh_setup_enabled | default(true)
+
+- name: Appliquer les permissions 600 sur les fichiers du dossier .ssh
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: '0600'
+  with_items: "{{ ssh_files.files }}"
+  become: yes
+  when: ssh_setup_enabled | default(true)
+
