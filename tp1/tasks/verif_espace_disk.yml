@@ -1,3 +1,12 @@
+---
+
+- name: rapport des slaves du cluster
+  ansible.builtin.command: hadoop dfsadmin -report
+  register: rapport
+
+- name: Afficher les résultats
+  ansible.builtin.debug:
+    var: rapport.stdout_lines
 
 - name: Vérifier l'espace disque disponible
   ansible.builtin.command: df -h
